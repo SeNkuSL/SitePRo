@@ -3,69 +3,141 @@
 <title>
 Работа номер 15
 </title>
-    <style>
-    /* Стили для меню */
-    nav {
-        background-color: #333;
-        padding: 10px 0;
-        margin-bottom: 20px;
-    }
-    
-    nav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-    }
-    
-    nav li {
-        display: inline-block;
-        margin: 0 15px;
-    }
-    
-    nav a {
-        color: white;
-        text-decoration: none;
-        font-size: 18px;
-        padding: 5px 10px;
-        transition: all 0.3s ease;
-    }
-    
-    nav a:hover {
-        background-color: #555;
-        border-radius: 5px;
-    }
-    
-    .current {
-        font-weight: bold;
-        background-color: #4CAF50;
-        border-radius: 5px;
-    }
-</style>
-    <style>
-    body {
-        background: white;
-        color: black;
-        transition: all 0.3s;
-    }
-    body.dark-mode {
-        background: #121212;
-        color: #e0e0e0;
-    }
-</style>
+ <style>
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: #ffffff;
+            color: #333333;
+            transition: background 0.3s, color 0.3s;
+        }
 
-<button id="theme-toggle">🌙</button>
+        /* Тёмная тема */
+        body.dark-mode {
+            background: #121212;
+            color: #e0e0e0;
+        }
 
-<script>
-    const themeToggle = document.getElementById("theme-toggle");
-    themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        themeToggle.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
-    });
-</script>
+        /* Кнопка "Наверх" */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #1e90ff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #back-to-top:hover {
+            background: #0077cc;
+        }
+
+        /* Переключатель темы */
+        #theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: #333333;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        body.dark-mode #theme-toggle {
+            background: #f0f0f0;
+            color: #333333;
+        }
+
+        /* Для демонстрации контента */
+        .content {
+            height: 200vh;
+            padding: 50px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body background="img/fon.jpg">
 <font face="Times New Roman" size=5>
+</div>
+
+    <!-- Кнопка "Наверх" -->
+    <button id="back-to-top" title="Наверх">↑</button>
+
+    <!-- Переключатель темы -->
+    <button id="theme-toggle" title="Переключить тему">🌙</button>
+
+    <script>
+        // Прокрутка вверх
+        const backToTopButton = document.getElementById("back-to-top");
+        
+        window.addEventListener("scroll", () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add("visible");
+            } else {
+                backToTopButton.classList.remove("visible");
+            }
+        });
+
+        backToTopButton.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
+        // Тёмная тема
+        const themeToggle = document.getElementById("theme-toggle");
+        
+        // Проверяем сохранённую тему (если есть)
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            themeToggle.textContent = "☀️";
+        }
+
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            
+            // Сохраняем выбор пользователя
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+                themeToggle.textContent = "☀️";
+            } else {
+                localStorage.setItem("theme", "light");
+                themeToggle.textContent = "🌙";
+            }
+        });
+    </script>
     <center>
 <h1> Министерство науки и высшего образования Российской Федерации
 Федеральное государственное бюджетное образовательное учреждение
