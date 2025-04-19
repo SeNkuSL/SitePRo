@@ -5,26 +5,63 @@
 </title>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-        /* Общие стили */
+    <title>Работа номер 18 - Списки</title>
+    <style>
+        /* Стили для прелоадера */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ddd;
+            border-top-color: #2c3e50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        body.dark-mode .preloader {
+            background: #121212;
+        }
+
+        body.dark-mode .loader {
+            border-top-color: #3498db;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Основные стили */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', serif;
             margin: 0;
             padding: 0;
-            background: #f5f5f5;
+            background: #f5f5f5 url('img/fon.jpg');
             color: #333;
             transition: all 0.3s ease;
+            font-size: 20px;
         }
 
         body.dark-mode {
-            background: #121212;
+            background: #121212 url('img/fon.jpg');
             color: #f0f0f0;
-        }
-
-        /* Контент для демонстрации */
-        .content {
-            padding: 100px 20px;
-            text-align: center;
         }
 
         /* Выпадающее меню */
@@ -63,7 +100,7 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            width: 200px;
+            width: 250px;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -126,23 +163,111 @@
             text-align: center;
         }
 
-        .theme-switch {
+        .current-page {
+            background-color: #3498db;
+            color: white !important;
+        }
+
+        body.dark-mode .current-page {
+            background-color: #2980b9;
+        }
+
+        .settings-item {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             cursor: pointer;
         }
 
-        .theme-icon {
-            margin-right: 10px;
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3498db;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Стили контента */
+        .content {
+            padding: 80px 20px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2 {
+            color: #3498db;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
+
+        body.dark-mode hr {
+            background: #444;
+        }
+
+        /* Адаптивное меню (старое - можно удалить если не нужно) */
+        .responsive-menu {
+            display: none; /* Скрываем старое меню */
         }
     </style>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body background="img/fon.jpg">
-<div class="menu-container">
+<body>
+    <!-- Прелоадер -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Новое выпадающее меню -->
+    <div class="menu-container">
         <button class="menu-button">
-            <i class="fas fa-bars"></i>
+            <i class="fas fa-cog"></i>
         </button>
         
         <div class="dropdown-menu">
@@ -153,7 +278,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="page2.html" class="menu-link">
+                    <a href="page2.html" class="menu-link current-page">
                         <i class="fas fa-link"></i> Ссылки
                     </a>
                 </li>
@@ -167,126 +292,23 @@
                         <i class="fas fa-table"></i> Таблицы
                     </a>
                 </li>
-                <li class="menu-item theme-switch" id="theme-toggle">
-                    <span class="theme-icon"><i class="fas fa-moon"></i></span>
-                    <span class="theme-text">Тёмная тема</span>
+                <li class="menu-item settings-item">
+                    <span><i class="fas fa-moon"></i> Тёмная тема</span>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </li>
+                <li class="menu-item settings-item">
+                    <span><i class="fas fa-spinner"></i> Экран загрузки</span>
+                    <label class="switch">
+                        <input type="checkbox" id="loader-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
                 </li>
             </ul>
         </div>
     </div>
-
-    <script>
-        // Переключение темы
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = themeToggle.querySelector('.theme-icon i');
-        const themeText = themeToggle.querySelector('.theme-text');
-        
-        // Проверка сохранённой темы
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-            themeText.textContent = 'Светлая тема';
-        }
-        
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeIcon.classList.replace('fa-moon', 'fa-sun');
-                themeText.textContent = 'Светлая тема';
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeIcon.classList.replace('fa-sun', 'fa-moon');
-                themeText.textContent = 'Тёмная тема';
-            }
-        });
-    </script>
-<font face="Times New Roman" size=5>
-
-<style>
-    /* Адаптивное меню */
-    .responsive-menu {
-        background-color: #333;
-    }
-    
-    .responsive-menu ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
-    
-    .responsive-menu li {
-        float: left;
-    }
-    
-    .responsive-menu a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-    
-    .responsive-menu a:hover {
-        background-color: #111;
-    }
-    
-    .responsive-menu .current {
-        background-color: #4CAF50;
-    }
-    
-    .responsive-menu .icon {
-        display: none;
-    }
-    
-    @media screen and (max-width: 600px) {
-        .responsive-menu li:not(:first-child) {display: none;}
-        .responsive-menu li.icon {
-            float: right;
-            display: block;
-        }
-    }
-    
-    @media screen and (max-width: 600px) {
-        .responsive-menu.responsive {position: relative;}
-        .responsive-menu.responsive .icon {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-        .responsive-menu.responsive li {
-            float: none;
-            display: block;
-            text-align: left;
-        }
-    }
-</style>
-
-<nav class="responsive-menu" id="responsiveNav">
-    <ul>
-        <li><a href="index.html" class="current">Главная</a></li>
-        <li><a href="page2.html">Ссылки</a></li>
-        <li><a href="page3.html">Списки</a></li>
-        <li><a href="page4.html">Таблицы</a></li>
-        <li class="icon">
-            <a href="javascript:void(0);" onclick="toggleMenu()">☰</a>
-        </li>
-    </ul>
-</nav>
-
-<script>
-    function toggleMenu() {
-        var nav = document.getElementById("responsiveNav");
-        if (nav.className === "responsive-menu") {
-            nav.className += " responsive";
-        } else {
-            nav.className = "responsive-menu";
-        }
-    }
-</script>
-</nav>
  <br>
 <h2>ПР17 Изучение HTML:  Урок 4. Ссылки в html.</h2>
 <p><b>Что такое ссылка html</b></p><hr align="left" color=black width=165>
@@ -329,5 +351,40 @@
 расширениями <b>gif, jpg, jpeg и png</b>. В том случае, если размер изображения меньше окна
 браузера, то изображение будет автоматически дальше заполнять оставшийся фон.
 В <b>body</b> используем атрибут <i><b>background</b></i>, в котором прописываем путь к изображению </p>
+     <script>
+        // Загрузка страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем настройки загрузки
+            const loaderEnabled = localStorage.getItem('loaderEnabled') !== 'false';
+            document.getElementById('loader-toggle').checked = loaderEnabled;
+            
+            if (!loaderEnabled) {
+                document.querySelector('.preloader').classList.add('hidden');
+            } else {
+                window.addEventListener('load', function() {
+                    setTimeout(function() {
+                        document.querySelector('.preloader').classList.add('hidden');
+                    }, 1000);
+                });
+            }
+            
+            // Проверяем тему
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').checked = true;
+            }
+        });
+        
+        // Переключение темы
+        document.getElementById('theme-toggle').addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+        });
+        
+        // Переключение экрана загрузки
+        document.getElementById('loader-toggle').addEventListener('change', function() {
+            localStorage.setItem('loaderEnabled', this.checked);
+        });
+    </script>
 </body>
 </html>
