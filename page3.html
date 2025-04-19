@@ -3,149 +3,289 @@
 <title>
 Работа номер 18
 </title>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
         /* Общие стили */
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
             margin: 0;
-            padding: 20px;
-            background: #ffffff;
-            color: #333333;
-            transition: background 0.3s, color 0.3s;
+            padding: 0;
+            background: #f5f5f5;
+            color: #333;
+            transition: all 0.3s ease;
         }
 
-        /* Тёмная тема */
         body.dark-mode {
             background: #121212;
-            color: #e0e0e0;
+            color: #f0f0f0;
         }
 
-        /* Кнопка "Наверх" */
-        #back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: #1e90ff;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
-
-        #back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #back-to-top:hover {
-            background: #0077cc;
-        }
-
-        /* Переключатель темы */
-        #theme-toggle {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 50px;
-            height: 50px;
-            background: #333333;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
-
-        body.dark-mode #theme-toggle {
-            background: #f0f0f0;
-            color: #333333;
-        }
-
-        /* Для демонстрации контента */
+        /* Контент для демонстрации */
         .content {
-            height: 200vh;
-            padding: 50px;
+            padding: 100px 20px;
             text-align: center;
         }
-    </style>
-</head>
-<body background="img/fon.jpg">
-<font face="Times New Roman" size=5>
-</div>
 
-    <!-- Кнопка "Наверх" -->
-    <button id="back-to-top" title="Наверх">↑</button>
-
-    <!-- Переключатель темы -->
-    <button id="theme-toggle" title="Переключить тему">🌙</button>
-
-    <script>
-        // Прокрутка вверх
-        const backToTopButton = document.getElementById("back-to-top");
-        
-        window.addEventListener("scroll", () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.add("visible");
-            } else {
-                backToTopButton.classList.remove("visible");
-            }
-        });
-
-        backToTopButton.addEventListener("click", () => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        });
-
-        // Тёмная тема
-        const themeToggle = document.getElementById("theme-toggle");
-        
-        // Проверяем сохранённую тему (если есть)
-        if (localStorage.getItem("theme") === "dark") {
-            document.body.classList.add("dark-mode");
-            themeToggle.textContent = "☀️";
+        /* Выпадающее меню */
+        .menu-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
         }
 
-        themeToggle.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
+        .menu-button {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .menu-button:hover {
+            background: #1a252f;
+            transform: rotate(90deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .menu-container:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        body.dark-mode .dropdown-menu {
+            background: #2c3e50;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s ease;
+        }
+
+        body.dark-mode .menu-item {
+            border-bottom: 1px solid #444;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        body.dark-mode .menu-item:hover {
+            background: #34495e;
+        }
+
+        .menu-link {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        body.dark-mode .menu-link {
+            color: #f0f0f0;
+        }
+
+        .menu-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .theme-switch {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .theme-icon {
+            margin-right: 10px;
+        }
+    </style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body background="img/fon.jpg">
+<div class="menu-container">
+        <button class="menu-button">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="dropdown-menu">
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="index.html" class="menu-link">
+                        <i class="fas fa-home"></i> Главная
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="page2.html" class="menu-link">
+                        <i class="fas fa-link"></i> Ссылки
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="page3.html" class="menu-link">
+                        <i class="fas fa-list"></i> Списки
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="page4.html" class="menu-link">
+                        <i class="fas fa-table"></i> Таблицы
+                    </a>
+                </li>
+                <li class="menu-item theme-switch" id="theme-toggle">
+                    <span class="theme-icon"><i class="fas fa-moon"></i></span>
+                    <span class="theme-text">Тёмная тема</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Переключение темы
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon i');
+        const themeText = themeToggle.querySelector('.theme-text');
+        
+        // Проверка сохранённой темы
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+            themeText.textContent = 'Светлая тема';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
             
-            // Сохраняем выбор пользователя
-            if (document.body.classList.contains("dark-mode")) {
-                localStorage.setItem("theme", "dark");
-                themeToggle.textContent = "☀️";
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeText.textContent = 'Светлая тема';
             } else {
-                localStorage.setItem("theme", "light");
-                themeToggle.textContent = "🌙";
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeText.textContent = 'Тёмная тема';
             }
         });
     </script>
-<nav>
+<font face="Times New Roman" size=5>
+
+<style>
+    /* Адаптивное меню */
+    .responsive-menu {
+        background-color: #333;
+    }
+    
+    .responsive-menu ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    .responsive-menu li {
+        float: left;
+    }
+    
+    .responsive-menu a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    
+    .responsive-menu a:hover {
+        background-color: #111;
+    }
+    
+    .responsive-menu .current {
+        background-color: #4CAF50;
+    }
+    
+    .responsive-menu .icon {
+        display: none;
+    }
+    
+    @media screen and (max-width: 600px) {
+        .responsive-menu li:not(:first-child) {display: none;}
+        .responsive-menu li.icon {
+            float: right;
+            display: block;
+        }
+    }
+    
+    @media screen and (max-width: 600px) {
+        .responsive-menu.responsive {position: relative;}
+        .responsive-menu.responsive .icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .responsive-menu.responsive li {
+            float: none;
+            display: block;
+            text-align: left;
+        }
+    }
+</style>
+
+<nav class="responsive-menu" id="responsiveNav">
     <ul>
         <li><a href="index.html" class="current">Главная</a></li>
         <li><a href="page2.html">Ссылки</a></li>
-        <li><a href="page3.html">Списки и Специальные символы</a></li>
+        <li><a href="page3.html">Списки</a></li>
         <li><a href="page4.html">Таблицы</a></li>
+        <li class="icon">
+            <a href="javascript:void(0);" onclick="toggleMenu()">☰</a>
+        </li>
     </ul>
 </nav>
+
+<script>
+    function toggleMenu() {
+        var nav = document.getElementById("responsiveNav");
+        if (nav.className === "responsive-menu") {
+            nav.className += " responsive";
+        } else {
+            nav.className = "responsive-menu";
+        }
+    }
+</script>
 <br>
 <center>
 <h1>Урок 6. Специальные символы в html</h1>
