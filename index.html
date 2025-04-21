@@ -3,312 +3,37 @@
 <title>
 Работа номер 15
 </title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Работа номер 18 - Списки</title>
-    <style>
-        /* Стили для прелоадера */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .preloader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #ddd;
-            border-top-color: #2c3e50;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        body.dark-mode .preloader {
-            background: #121212;
-        }
-
-        body.dark-mode .loader {
-            border-top-color: #3498db;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Основные стили */
-        body {
-            font-family: 'Times New Roman', serif;
-            margin: 0;
-            padding: 0;
-            background: #f5f5f5 url('img/fon.jpg');
-            color: #333;
-            transition: all 0.3s ease;
-            font-size: 20px;
-        }
-
-        body.dark-mode {
-            background: #121212 url('img/fon.jpg');
-            color: #f0f0f0;
-        }
-
-        /* Выпадающее меню */
-        .menu-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .menu-button {
-            background: #2c3e50;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .menu-button:hover {
-            background: #1a252f;
-            transform: rotate(90deg);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            width: 250px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .menu-container:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        body.dark-mode .dropdown-menu {
-            background: #2c3e50;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-        }
-
-        .menu-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .menu-item {
-            padding: 12px 20px;
-            border-bottom: 1px solid #eee;
-            transition: all 0.2s ease;
-        }
-
-        body.dark-mode .menu-item {
-            border-bottom: 1px solid #444;
-        }
-
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-
-        .menu-item:hover {
-            background: #f0f0f0;
-        }
-
-        body.dark-mode .menu-item:hover {
-            background: #34495e;
-        }
-
-        .menu-link {
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            align-items: center;
-        }
-
-        body.dark-mode .menu-link {
-            color: #f0f0f0;
-        }
-
-        .menu-link i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .current-page {
-            background-color: #3498db;
-            color: white !important;
-        }
-
-        body.dark-mode .current-page {
-            background-color: #2980b9;
-        }
-
-        .settings-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #3498db;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        /* Стили контента */
-        .content {
-            padding: 80px 20px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        h1, h2 {
-            color: #2c3e50;
-        }
-
-        body.dark-mode h1,
-        body.dark-mode h2 {
-            color: #3498db;
-        }
-
-        hr {
-            border: 0;
-            height: 1px;
-            background: #ddd;
-            margin: 20px 0;
-        }
-
-        body.dark-mode hr {
-            background: #444;
-        }
-
-        /* Адаптивное меню (старое - можно удалить если не нужно) */
-        .responsive-menu {
-            display: none; /* Скрываем старое меню */
-        }
-    </style>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Работа номер 15</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>.preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f5f5;display:flex;justify-content:center;align-items:center;z-index:9999;transition:opacity .5s,visibility .5s}.preloader.hidden{opacity:0;visibility:hidden}.loader{width:50px;height:50px;border:5px solid #ddd;border-top-color:#2c3e50;border-radius:50%;animation:spin 1s linear infinite}body.dark-mode .preloader{background:#121212}body.dark-mode .loader{border-top-color:#3498db}@keyframes spin{to{transform:rotate(360deg)}}body{font-family:'Times New Roman',serif;margin:0;padding:0;background:#f5f5f5 url('img/fon.jpg');color:#333;transition:all .3s ease;font-size:20px}body.dark-mode{background:#121212 url('img/fon.jpg');color:#f0f0f0}.menu-container{position:fixed;top:20px;right:20px;z-index:1000}.menu-button{background:#2c3e50;color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;box-shadow:0 2px 10px rgba(0,0,0,.2)}.menu-button:hover{background:#1a252f;transform:rotate(90deg)}.dropdown-menu{position:absolute;top:60px;right:0;background:#fff;border-radius:8px;box-shadow:0 5px 15px rgba(0,0,0,.2);width:250px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:all .3s ease}body.dark-mode .dropdown-menu{background:#2c3e50;box-shadow:0 5px 15px rgba(0,0,0,.4)}.menu-container:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}.menu-list{list-style:none;padding:0;margin:0}.menu-item{padding:12px 20px;border-bottom:1px solid #eee;transition:all .2s ease}body.dark-mode .menu-item{border-bottom:1px solid #444}.menu-item:last-child{border-bottom:none}.menu-item:hover{background:#f0f0f0}body.dark-mode .menu-item:hover{background:#34495e}.menu-link{text-decoration:none;color:#333;display:flex;align-items:center}body.dark-mode .menu-link{color:#f0f0f0}.menu-link i{margin-right:10px;width:20px;text-align:center}.current-page{background-color:#3498db;color:#fff!important}body.dark-mode .current-page{background-color:#2980b9}.settings-item{display:flex;align-items:center;justify-content:space-between;cursor:pointer}.switch{position:relative;display:inline-block;width:50px;height:24px}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:24px}.slider:before{position:absolute;content:"";height:16px;width:16px;left:4px;bottom:4px;background-color:#fff;transition:.4s;border-radius:50%}input:checked+.slider{background-color:#3498db}input:checked+.slider:before{transform:translateX(26px)}.content{padding:80px 20px 20px;max-width:900px;margin:0 auto}h1,h2{color:#2c3e50}body.dark-mode h1,body.dark-mode h2{color:#3498db}hr{border:0;height:1px;background:#ddd;margin:20px 0}body.dark-mode hr{background:#444}.responsive-menu{display:none}.search-container{position:fixed;top:20px;left:20px;z-index:1000}.search-box{padding:8px 15px;border-radius:20px;border:1px solid #ddd;width:200px;transition:all .3s ease}.search-box:focus{width:250px;outline:none}body.dark-mode .search-box{background:#333;color:#fff;border-color:#555}#search-results{position:absolute;top:40px;left:0;background:#fff;width:100%;border-radius:5px;box-shadow:0 2px 5px rgba(0,0,0,.2);max-height:300px;overflow-y:auto;display:none}body.dark-mode #search-results{background:#2c3e50;box-shadow:0 2px 5px rgba(0,0,0,.4)}.search-result-item{padding:10px;border-bottom:1px solid #eee;cursor:pointer}body.dark-mode .search-result-item{border-bottom:1px solid #444}.search-result-item:hover{background:#f0f0f0}body.dark-mode .search-result-item:hover{background:#34495e}</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Прелоадер -->
-    <div class="preloader">
-        <div class="loader"></div>
+    <div class="preloader"><div class="loader"></div></div>
+
+    <!-- Поиск по сайту -->
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="Поиск по сайту..." id="search-input">
+        <div id="search-results"></div>
     </div>
 
-    <!-- Новое выпадающее меню -->
+    <!-- Меню -->
     <div class="menu-container">
-        <button class="menu-button">
-            <i class="fas fa-cog"></i>
-        </button>
-        
+        <button class="menu-button"><i class="fas fa-cog"></i></button>
         <div class="dropdown-menu">
             <ul class="menu-list">
-                <li class="menu-item">
-                    <a href="index.html" class="menu-link current-page">
-                        <i class="fas fa-home"></i> Главная
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="page2.html" class="menu-link">
-                        <i class="fas fa-link"></i> Ссылки
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="page3.html" class="menu-link">
-                        <i class="fas fa-list"></i> Списки
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="page4.html" class="menu-link">
-                        <i class="fas fa-table"></i> Таблицы
-                    </a>
-                </li>
-                <li class="menu-item settings-item">
-                    <span><i class="fas fa-moon"></i> Тёмная тема</span>
-                    <label class="switch">
-                        <input type="checkbox" id="theme-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </li>
-                <li class="menu-item settings-item">
-                    <span><i class="fas fa-spinner"></i> Экран загрузки</span>
-                    <label class="switch">
-                        <input type="checkbox" id="loader-toggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </li>
+                <li class="menu-item"><a href="index.html" class="menu-link current-page"><i class="fas fa-home"></i> Главная</a></li>
+                <li class="menu-item"><a href="page2.html" class="menu-link"><i class="fas fa-link"></i> Ссылки</a></li>
+                <li class="menu-item"><a href="page3.html" class="menu-link"><i class="fas fa-list"></i> Списки</a></li>
+                <li class="menu-item"><a href="page4.html" class="menu-link"><i class="fas fa-table"></i> Таблицы</a></li>
+                <li class="menu-item settings-item"><span><i class="fas fa-moon"></i> Тёмная тема</span><label class="switch"><input type="checkbox" id="theme-toggle"><span class="slider"></span></label></li>
+                <li class="menu-item settings-item"><span><i class="fas fa-spinner"></i> Экран загрузки</span><label class="switch"><input type="checkbox" id="loader-toggle" checked><span class="slider"></span></label></li>
             </ul>
         </div>
     </div>
+
 <br>
 <h2> Тема 1 начало работы в html </h2>
 <p> Для написания отчета по html мы использовали текстовый редактор и различные теги такие как.</p>
@@ -372,65 +97,36 @@
 (Hypertext Preprocessor).">abbr</abbr> обозначает аббревиатуру.</p>
 </font>
         <script>
-        // Загрузка страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            // Проверяем настройки загрузки
-            const loaderEnabled = localStorage.getItem('loaderEnabled') !== 'false';
-            document.getElementById('loader-toggle').checked = loaderEnabled;
-            
-            if (!loaderEnabled) {
-                document.querySelector('.preloader').classList.add('hidden');
-            } else {
-                window.addEventListener('load', function() {
-                    setTimeout(function() {
-                        document.querySelector('.preloader').classList.add('hidden');
-                    }, 1000);
-                });
-            }
-            
-            // Проверяем тему
-            if (localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('theme-toggle').checked = true;
-            }
+        // Минифицированный JavaScript
+        document.addEventListener('DOMContentLoaded',function(){
+            const e=localStorage.getItem('loaderEnabled')!=='false';
+            document.getElementById('loader-toggle').checked=e;
+            e?window.addEventListener('load',function(){setTimeout(function(){document.querySelector('.preloader').classList.add('hidden')},1e3)}):document.querySelector('.preloader').classList.add('hidden');
+            'dark'===localStorage.getItem('theme')&&(document.body.classList.add('dark-mode'),document.getElementById('theme-toggle').checked=!0,document.body.style.backgroundImage="url('img/fon-dark.jpg')");
+            const t=document.getElementById('search-input'),n=document.getElementById('search-results');
+            t&&n&&(t.addEventListener('input',function(){
+                const e=t.value.trim();
+                if(e.length>2){
+                    const t=[],n=document.querySelectorAll('.content p, .content h1, .content h2');
+                    for(let o=0;o<n.length;o++)n[o].textContent.toLowerCase().includes(e.toLowerCase())&&t.push({text:n[o].textContent.substring(0,100)+"...",url:window.location.pathname,element:n[o]});
+                    if(t.length>0){
+                        let o="";
+                        for(let e=0;e<t.length;e++)o+=`<div class="search-result-item" data-index="${e}">${t[e].text}</div>`;
+                        n.innerHTML=o;
+                        n.style.display="block";
+                        const r=document.querySelectorAll('.search-result-item');
+                        for(let o=0;o<r.length;o++)r[o].addEventListener('click',function(){
+                            t[parseInt(this.getAttribute('data-index'))].element.scrollIntoView({behavior:"smooth"}),n.style.display="none",t.value=""
+                        })
+                    }else n.innerHTML='<div class="search-result-item">Ничего не найдено</div>',n.style.display="block"
+                }else n.style.display="none"
+            }),document.addEventListener('click',function(e){e.target!==t&&e.target!==n&&(n.style.display="none")}))
         });
-        
-        // Переключение темы
-        document.getElementById('theme-toggle').addEventListener('change', function() {
+        document.getElementById('theme-toggle')&&document.getElementById('theme-toggle').addEventListener('change',function(){
             document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+            this.checked?(document.body.style.backgroundImage="url('img/fon-dark.jpg')",localStorage.setItem('theme','dark')):(document.body.style.backgroundImage="url('img/fon.jpg')",localStorage.setItem('theme','light'))
         });
-        
-        // Переключение экрана загрузки
-        document.getElementById('loader-toggle').addEventListener('change', function() {
-            localStorage.setItem('loaderEnabled', this.checked);
-        });
+        document.getElementById('loader-toggle')&&document.getElementById('loader-toggle').addEventListener('change',function(){localStorage.setItem('loaderEnabled',this.checked)});
     </script>
-    <script>
-    // Переключение темы с изменением фона
-    document.getElementById('theme-toggle').addEventListener('change', function() {
-        document.body.classList.toggle('dark-mode');
-        
-        // Меняем фон в зависимости от темы
-        if (this.checked) {
-            document.body.style.backgroundImage = "url('img/fon-dark.jpg')"; // Темный фон
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.body.style.backgroundImage = "url('img/fon.jpg')"; // Светлый фон
-            localStorage.setItem('theme', 'light');
-        }
-    });
-
-    // При загрузке страницы проверяем тему
-    document.addEventListener('DOMContentLoaded', function() {
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            document.getElementById('theme-toggle').checked = true;
-            document.body.style.backgroundImage = "url('img/fon-dark.jpg')";
-        } else {
-            document.body.style.backgroundImage = "url('img/fon.jpg')";
-        }
-    });
-</script>
 </body>
 </html>
