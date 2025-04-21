@@ -386,5 +386,31 @@
             localStorage.setItem('loaderEnabled', this.checked);
         });
     </script>
+    <script>
+    // Переключение темы с изменением фона
+    document.getElementById('theme-toggle').addEventListener('change', function() {
+        document.body.classList.toggle('dark-mode');
+        
+        // Меняем фон в зависимости от темы
+        if (this.checked) {
+            document.body.style.backgroundImage = "url('img/fon-dark.jpg')"; // Темный фон
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.style.backgroundImage = "url('img/fon.jpg')"; // Светлый фон
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // При загрузке страницы проверяем тему
+    document.addEventListener('DOMContentLoaded', function() {
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('theme-toggle').checked = true;
+            document.body.style.backgroundImage = "url('img/fon-dark.jpg')";
+        } else {
+            document.body.style.backgroundImage = "url('img/fon.jpg')";
+        }
+    });
+</script>
 </body>
 </html>
